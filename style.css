@@ -25,3 +25,19 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 780px;
+  padding: 2rem;
+}
+
+/* Title */
+.title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2rem;
+  color: var(--text);
+  margin-bottom: 2rem;
+  letter-spacing: -1px;
+}

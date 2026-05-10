@@ -121,3 +121,69 @@ body {
 .input-field:focus {
   border-color: var(--accent);
 }
+
+/* Result Screen */
+.result-screen {
+  display: none; /* Hidden for now */
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 2.5rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.result-screen h2 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+
+/* Final Stats */
+.final-stats {
+  display: flex;
+  gap: 3rem;
+  justify-content: center;
+}
+
+.final-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.final-label {
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.final-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2rem;
+  font-weight: 700; /* Bold */
+  color: var(--text);
+}
+
+/* Restart Button */
+.restart-btn {
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 2.5rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s; /* Animation */
+}
+
+.restart-btn:hover {
+  opacity: 0.85;
+  transform: translateY(-1px); /* Animation */
+}

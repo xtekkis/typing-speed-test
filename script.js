@@ -51,5 +51,32 @@ function loadQuote() {
   });
 }
 
-// Start the game
+// Start the countdown timer
+function startTimer() {
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    timerDisplay.textContent = timeLeft;
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      endGame();
+    }
+  }, 1000);
+}
+
+// Calculate WPM live
+function updateWpm() {
+  const wordsTyped = correctChars / 5;
+  const minutesElapsed = (60 - timeLeft) / 60;
+  const wpm = minutesElapsed > 0 ? Math.round(wordsTyped / minutesElapsed) : 0;
+  wpmDisplay.textContent = wpm;
+}
+
+// Calculate accuracy live
+function updateAccuracy() {
+  if (totalTyped === 0) return;
+  const acc = Math.round((correctChars / totalTyped) * 100);
+  accuracyDisplay.textContent = acc + "%";
+}
+
+// Start game
 loadQuote();

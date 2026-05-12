@@ -67,7 +67,8 @@ function startTimer() {
 
 // Calculate WPM live
 function updateWpm() {
-  const wordsTyped = correctChars / 5;
+  const totalCorrect = correctCharsAllTime + correctChars;
+  const wordsTyped = totalCorrect / 5;
   const minutesElapsed = (60 - timeLeft) / 60;
   const wpm = minutesElapsed > 0 ? Math.round(wordsTyped / minutesElapsed) : 0;
   wpmDisplay.textContent = wpm;
@@ -77,7 +78,7 @@ function updateWpm() {
 function updateAccuracy() {
   const total = totalTypedAllTime + totalTyped;
   if (total === 0) return;
-  const acc = Math.round(((correctCharsAllTime + correctChars) / total) * 100);
+  const acc = Math.round((correctCharsAllTime + correctChars) / total * 100);
   accuracyDisplay.textContent = acc + "%";
 }
 
@@ -131,6 +132,49 @@ inputField.addEventListener("input", () => {
     loadQuote();
   }
 });
+
+// Show results screen with final stats when timer runs out
+function endGame() {
+  inputField.disabled = true;
+
+  const total = totalTypedAllTime + totalTyped;
+  const wpm = Math.round((correctCharsAllTime + correctChars) / 5);
+  const acc = total > 0 ? Math.round(((correctCharsAllTime + correctChars) / total) * 100) : 100;
+
+  finalWpm.textContent = wpm;
+  finalAccuracy.textContent = acc + "%";
+  finalCorrect.textContent = correctCharsAllTime + correctChars;
+  finalErrors.textContent = errors;
+
+  resultScreen.style.display = "flex";
+}
+
+// Reset everything back to the start
+function resetGame() {
+  clearInterval(timerInterval);
+  timeLeft = 60;
+  started = false;
+  correctChars = 0;
+  totalTyped = 0;
+  errors = 0;
+  totalTypedAllTime = 0;
+  correctCharsAllTime = 0;
+
+  timerDisplay.textContent = "60";
+  wpmDisplay.textContent = "0";
+  accuracyDisplay.textContent = "100%";
+
+  inputField.disabled = false;
+  inputField.value = "";
+  inputField.focus();
+
+  resultScreen.style.display = "none";
+
+  loadQuote();
+}
+
+// Restart button
+restartBtn.addEventListener("click", resetGame);
 
 // Start game
 loadQuote();

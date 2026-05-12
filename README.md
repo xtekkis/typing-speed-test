@@ -12,7 +12,7 @@ Type as many programming quotes as you can in 60 seconds and check your Words Pe
 - Result screen with final WPM, accuracy, correct characters and errors
 - Restart without refreshing the page
 
-# 🔗 Live Demo
+## 🔗 Live Demo
 [xtekkis.github.io/typing-speed-test](https://xtekkis.github.io/typing-speed-test)
 
 ## 📷 Preview

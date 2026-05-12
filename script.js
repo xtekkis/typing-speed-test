@@ -33,6 +33,8 @@ let totalTyped = 0;
 let errors = 0;
 let totalTypedAllTime = 0;
 let correctCharsAllTime = 0;
+let totalKeypresses = 0;
+let correctKeypresses = 0;
 
 // Load a random quote and render each character as a span
 function loadQuote() {
@@ -76,10 +78,57 @@ function updateWpm() {
 
 // Calculate accuracy live
 function updateAccuracy() {
-  const total = totalTypedAllTime + totalTyped;
-  if (total === 0) return;
-  const acc = Math.round((correctCharsAllTime + correctChars) / total * 100);
+  if (totalKeypresses === 0) return;
+  const acc = Math.round((correctKeypresses / totalKeypresses) * 100);
   accuracyDisplay.textContent = acc + "%";
+}
+
+// Show results screen with final stats when timer runs out
+function endGame() {
+  inputField.disabled = true;
+  quoteBox.style.display = "none";
+  inputField.style.display = "none";
+  document.querySelector(".stats-bar").style.display = "none";
+
+  const total = totalTypedAllTime + totalTyped;
+  const wpm = Math.round((correctCharsAllTime + correctChars) / 5);
+  const acc = totalKeypresses > 0 ? Math.round((correctKeypresses / totalKeypresses) * 100) : 100;
+
+  finalWpm.textContent = wpm;
+  finalAccuracy.textContent = acc + "%";
+  finalCorrect.textContent = correctCharsAllTime + correctChars;
+  finalErrors.textContent = totalKeypresses - correctKeypresses;
+
+  resultScreen.style.display = "flex";
+}
+
+// Reset everything back to the start
+function resetGame() {
+  clearInterval(timerInterval);
+  timeLeft = 60;
+  started = false;
+  correctChars = 0;
+  totalTyped = 0;
+  errors = 0;
+  totalTypedAllTime = 0;
+  correctCharsAllTime = 0;
+  totalKeypresses = 0;
+  correctKeypresses = 0;
+
+  timerDisplay.textContent = "60";
+  wpmDisplay.textContent = "0";
+  accuracyDisplay.textContent = "100%";
+
+  inputField.disabled = false;
+  inputField.value = "";
+  inputField.style.display = "block";
+  quoteBox.style.display = "block";
+
+  document.querySelector(".stats-bar").style.display = "flex";
+  resultScreen.style.display = "none";
+
+  loadQuote();
+  inputField.focus();
 }
 
 // Listen for user input and handle typing logic
@@ -113,18 +162,10 @@ inputField.addEventListener("input", () => {
     }
   });
 
-  // Count total errors
-  errors = 0;
-  for (let i = 0; i < typedValue.length; i++) {
-    if (typedValue[i] !== currentQuote[i]) {
-      errors++;
-    }
-  }
-
   updateWpm();
   updateAccuracy();
-
-  // Move to next quote when current one is completed
+  
+  // Save stats and move to next quote when current one is completed
   if (typedValue === currentQuote) {
     totalTypedAllTime += totalTyped;
     correctCharsAllTime += correctChars;
@@ -133,48 +174,20 @@ inputField.addEventListener("input", () => {
   }
 });
 
-// Show results screen with final stats when timer runs out
-function endGame() {
-  inputField.disabled = true;
-
-  const total = totalTypedAllTime + totalTyped;
-  const wpm = Math.round((correctCharsAllTime + correctChars) / 5);
-  const acc = total > 0 ? Math.round(((correctCharsAllTime + correctChars) / total) * 100) : 100;
-
-  finalWpm.textContent = wpm;
-  finalAccuracy.textContent = acc + "%";
-  finalCorrect.textContent = correctCharsAllTime + correctChars;
-  finalErrors.textContent = errors;
-
-  resultScreen.style.display = "flex";
-}
-
-// Reset everything back to the start
-function resetGame() {
-  clearInterval(timerInterval);
-  timeLeft = 60;
-  started = false;
-  correctChars = 0;
-  totalTyped = 0;
-  errors = 0;
-  totalTypedAllTime = 0;
-  correctCharsAllTime = 0;
-
-  timerDisplay.textContent = "60";
-  wpmDisplay.textContent = "0";
-  accuracyDisplay.textContent = "100%";
-
-  inputField.disabled = false;
-  inputField.value = "";
-  inputField.focus();
-
-  resultScreen.style.display = "none";
-
-  loadQuote();
-}
+// Track every keypress permanently for accurate error counting
+inputField.addEventListener("keydown", (e) => {
+  if (e.key.length === 1) {
+    totalKeypresses++;
+    const currentPos = inputField.value.length;
+    if (e.key === currentQuote[currentPos]) {
+      correctKeypresses++;
+    }
+  }
+});
 
 // Restart button
 restartBtn.addEventListener("click", resetGame);
 
-// Start game
+// Start the game and focus input so user can type immediately
 loadQuote();
+inputField.focus();

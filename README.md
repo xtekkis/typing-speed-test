@@ -1,13 +1,7 @@
 # Typing Speed Test ⌨️
 
-A browser-based typing speed test built with HTML, CSS and Javascript.
+A browser-based typing speed test built with HTML, CSS and JavaScript.
 Type as many programming quotes as you can in 60 seconds and check your Words Per Minute (WPM) and accuracy.
-
-# 🔗 Live Demo
-[xtekkis.github.io/typing-speed-test](https://xtekkis.github.io/typing-speed-test)
-
-## 📷 Preview
-![Typing Speed Test Preview](Images/preview.png)
 
 ## ✨ Features
 - 60 second countdown timer
@@ -17,6 +11,12 @@ Type as many programming quotes as you can in 60 seconds and check your Words Pe
 - Real programming quotes from famous developers
 - Result screen with final WPM, accuracy, correct characters and errors
 - Restart without refreshing the page
+
+# 🔗 Live Demo
+[xtekkis.github.io/typing-speed-test](https://xtekkis.github.io/typing-speed-test)
+
+## 📷 Preview
+![Typing Speed Test Preview](Images/preview.png)
 
 ## 🚀 Run Locally
 1. Clone the repository

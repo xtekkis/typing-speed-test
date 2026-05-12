@@ -11,15 +11,6 @@ const finalAccuracy = document.getElementById("final-accuracy");
 const finalCorrect = document.getElementById("final-correct");
 const finalErrors = document.getElementById("final-errors");
 
-// State Variables
-let currentQuote = "";
-let timeLeft = 60;
-let timerInterval = null;
-let started = false;
-let correctChars = 0;
-let totalTyped = 0;
-let errors = 0;
-
 // Quotes
 const quotes = [
   "Any fool can write code that a computer can understand but good programmers write code that humans can understand. - Martin Fowler",
@@ -31,6 +22,17 @@ const quotes = [
   "I am not a great programmer I am just a good programmer with great habits. - Kent Beck",
   "A language that does not affect the way you think about programming is not worth knowing. - Alan Perlis",
 ];
+
+// State Variables
+let currentQuote = "";
+let timeLeft = 60;
+let timerInterval = null;
+let started = false;
+let correctChars = 0;
+let totalTyped = 0;
+let errors = 0;
+let totalTypedAllTime = 0;
+let correctCharsAllTime = 0;
 
 // Load a random quote and render each character as a span
 function loadQuote() {
@@ -73,10 +75,62 @@ function updateWpm() {
 
 // Calculate accuracy live
 function updateAccuracy() {
-  if (totalTyped === 0) return;
-  const acc = Math.round((correctChars / totalTyped) * 100);
+  const total = totalTypedAllTime + totalTyped;
+  if (total === 0) return;
+  const acc = Math.round(((correctCharsAllTime + correctChars) / total) * 100);
   accuracyDisplay.textContent = acc + "%";
 }
+
+// Listen for user input and handle typing logic
+inputField.addEventListener("input", () => {
+
+  // Start timer on first keystroke
+  if (!started) {
+    started = true;
+    startTimer();
+  }
+
+  const typedValue = inputField.value;
+  const chars = quoteBox.querySelectorAll(".char");
+
+  totalTyped = typedValue.length;
+  correctChars = 0;
+
+  // Loop through each character and colour it based on whether it is correct or not
+  chars.forEach((span, index) => {
+    span.classList.remove("correct", "incorrect", "active");
+
+    if (index < typedValue.length) {
+      if (typedValue[index] === currentQuote[index]) {
+        span.classList.add("correct");
+        correctChars++;
+      } else {
+        span.classList.add("incorrect");
+      }
+    } else if (index === typedValue.length) {
+      span.classList.add("active");
+    }
+  });
+
+  // Count total errors
+  errors = 0;
+  for (let i = 0; i < typedValue.length; i++) {
+    if (typedValue[i] !== currentQuote[i]) {
+      errors++;
+    }
+  }
+
+  updateWpm();
+  updateAccuracy();
+
+  // Move to next quote when current one is completed
+  if (typedValue === currentQuote) {
+    totalTypedAllTime += totalTyped;
+    correctCharsAllTime += correctChars;
+    inputField.value = "";
+    loadQuote();
+  }
+});
 
 // Start game
 loadQuote();

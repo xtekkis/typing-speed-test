@@ -187,3 +187,21 @@ body {
   opacity: 0.85;
   transform: translateY(-1px); /* Animation */
 }
+
+/* Mobile responsive layout */
+@media (max-width: 600px) {
+  .final-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  .final-value {
+    font-size: 1.5rem;
+  }
+
+  .container {
+    padding: 1rem;
+  }
+}
